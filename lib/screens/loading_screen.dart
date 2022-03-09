@@ -7,7 +7,8 @@ class LoadingScreen extends StatefulWidget {
 }
 
 class _LoadingScreenState extends State<LoadingScreen> {
-  // デバイスの位置へのアクセスを続行できる
+
+
   void fetchLocation() async {
     Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.low);
@@ -21,9 +22,11 @@ class _LoadingScreenState extends State<LoadingScreen> {
         child: ElevatedButton(
           onPressed: () {
             setState(() {
-               print('test');
-              fetchLocation();
+                   print('test');
+             fetchLocation();
             });
+            
+           
           },
           child: const Text('Get Location'),
         ),

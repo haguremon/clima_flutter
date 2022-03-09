@@ -2,7 +2,13 @@
     package="com.example.clima_flutter">
 
     <!-- permission: 位置情報の取得の許可　iosで言う　info. -->
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    
+
+    <!-- Include only if your app benefits from precise location access. -->
+     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+    
 
    <application
         android:label="clima_flutter"
