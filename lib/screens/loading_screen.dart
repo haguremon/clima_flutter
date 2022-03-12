@@ -1,8 +1,8 @@
+import 'package:clima_flutter/services/networking.dart';
 import 'package:clima_flutter/utilities/constants.dart';
 import 'package:flutter/material.dart';
 import '../services/location.dart';
-import 'package:http/http.dart' as http; //パッケージの何を使用するかasでわかりやすくしてる
-import 'dart:convert';
+import 'location_screen.dart';
 
 class LoadingScreen extends StatefulWidget {
   @override
@@ -13,38 +13,39 @@ class _LoadingScreenState extends State<LoadingScreen> {
   @override
   void initState() {
     super.initState();
-    fetchLocation();
+    fetchLocationData();
   }
 
-  void fetchLocation() async {
+  void fetchLocationData() async {
     Location location = Location();
     await location.fetchCurrentLocation();
-    print(location.longitude);
-  }
 
-  void fetchData() async {
-    http.Response response = await http.get(Uri.parse(
-        'https://api.openweathermap.org/data/2.5/weather?lat=35.67567567567568&lon=139.7601531564893&units=metric&lang=ja&appid=$kMYAPI'));
+    NetworkHelper networkHelper = NetworkHelper(
+        'https://api.openweathermap.org/data/2.5/weather?lat=${location.latitude}&lon=${location.longitude}&units=metric&lang=ja&appid=$kMYAPIkey&units=metric');
 
-    if (response.statusCode == 200) {
-      String data = response.body;
+    var weatherData = await networkHelper.fetchData();
 
-      var decodeData = jsonDecode(data);
-
-      double temperature = decodeData['main']['temp'];
-      int conditionId = decodeData['weather'][0]['id'];
-      String cityname = decodeData['name'];
-      print(temperature);
-      print(conditionId);
-      print(cityname);
-    } else {
-      print(response.statusCode);
-    }
+  
+    Navigator.push(context, MaterialPageRoute(builder: (context) {
+      return LocationScreen(
+        weatherData: weatherData,
+      );
+    }));
   }
 
   @override
   Widget build(BuildContext context) {
-    fetchData();
-    return Scaffold();
+    return const Scaffold(
+      body: Center(
+        child: SizedBox(
+          width: 100,
+          height: 100,
+          child: CircularProgressIndicator(
+            backgroundColor: Colors.grey,
+            valueColor: AlwaysStoppedAnimation<Color>(Colors.black),
+          ),
+        ),
+      ),
+    );
   }
 }
