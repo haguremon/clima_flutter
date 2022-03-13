@@ -1,4 +1,21 @@
+import 'package:clima_flutter/services/location.dart';
+import 'package:clima_flutter/services/networking.dart';
+import 'package:clima_flutter/utilities/constants.dart';
+
+const openweathermapURL = 'https://api.openweathermap.org/data/2.5/weather';
+
 class WeatherModel {
+  Future<dynamic> fetchLocation() async {
+    Location location = Location();
+    await location.fetchCurrentLocation();
+
+    NetworkHelper networkHelper = NetworkHelper(
+        '$openweathermapURL?lat=${location.latitude}&lon=${location.longitude}&units=metric&lang=ja&appid=$kMYAPIkey&units=metric');
+
+    var weatherData = await networkHelper.fetchData();
+    return weatherData;
+  }
+
   String getWeatherIcon(int condition) {
     if (condition < 300) {
       return '🌩';
@@ -21,13 +38,13 @@ class WeatherModel {
 
   String getMessage(int temp) {
     if (temp > 25) {
-      return 'It\'s 🍦 time';
-    } else if (temp > 20) {
-      return 'Time for shorts and 👕';
+      return 'で今日は🍦が必要でしょう。 ';
+    } else if (temp > 17) {
+      return 'でショートパンツと👕の出番です。';
     } else if (temp < 10) {
-      return 'You\'ll need 🧣 and 🧤';
+      return 'で🧣と🧤が必要でしょう。';
     } else {
-      return 'Bring a 🧥 just in case';
+      return 'で念の為に🧥を用意するといいでしょう。 ';
     }
   }
 }
