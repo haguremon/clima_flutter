@@ -7,17 +7,19 @@ class CityScreen extends StatefulWidget {
 }
 
 class _CityScreenState extends State<CityScreen> {
+  String cityNmae = '';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           image: DecorationImage(
             image: AssetImage('images/city_background.jpg'),
             fit: BoxFit.cover,
           ),
         ),
-        constraints: BoxConstraints.expand(),
+        constraints: const BoxConstraints.expand(),
         child: SafeArea(
           child: Column(
             children: <Widget>[
@@ -27,27 +29,32 @@ class _CityScreenState extends State<CityScreen> {
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  child: Icon(
+                  child: const Icon(
                     Icons.arrow_back_ios,
                     size: 50.0,
                   ),
                 ),
               ),
               Container(
-                padding: EdgeInsets.all(20.0),
+                padding: const EdgeInsets.all(20.0),
                 child: TextField(
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Colors.black,
                   ),
                   decoration: kTextFieldDecoration,
                   onChanged: (value) {
-                    print(value);
+                    cityNmae = value;
                   },
                 ),
               ),
               TextButton(
-                onPressed: () {},
-                child: Text(
+                onPressed: () {
+                  Navigator.pop(
+                    context,
+                    cityNmae
+                  );
+                },
+                child: const Text(
                   'Get Weather',
                   style: kButtonTextStyle,
                 ),
